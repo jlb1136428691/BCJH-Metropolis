@@ -147,6 +147,5 @@ enum AbilityEnum {
     FRY,
     KNIFE
 };
-enum FlavorEnum { UNIDENTIFIED = -1, SWEET, SALTY, SOUR, BITTER, SPICY, TASTY };
 
 #endif
