@@ -175,9 +175,9 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
     if (MODE == 1) {
         
         // 第一个贵客
-        BanquetRule rule2[18];
-        int bestFull2 = banquetRule3(rule2, s);
-        BanquetInfo bi2[18];
+        BanquetRule rule2[45];
+        int bestFull2 = banquetRule(rule2, s);
+        BanquetInfo bi2[45];
         int totalScore2 = 0;
         int totalFull2 = 0;
         int scoreCache2 = 0;
@@ -230,11 +230,89 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
                           << std::endl;
             }
         }
+        int bestFull3 = banquetRule3(rule2, s);
+        int totalScore3 = 0;
+        int totalFull3 = 0;
+        int scoreCache3 = 0;
+        int fullCache3 = 0;
+        for (int i = 0+9+9; i < 9+9+9; i++) {
+            if ((log & 0x10) && i % 3 == 0) {
+                std::cout << "VERBOSE************" << std::endl;
+                s.chef[i / 3]->print();
+                std::cout << "************" << std::endl;
+            }
+            bi2[i] = getPrice(s.chef[i / 3], s.recipe[i], rule2[i], (log & 0x10));
+            totalFull3 += bi2[i].full;
+            totalScore3 += bi2[i].price;
+            scoreCache3 += bi2[i].price;
+            fullCache3 += bi2[i].full;
+            if ((log & 0x1) && i % 3 == 2) {
+                std::cout << "厨师：" << s.chef[i / 3]->name << " -> "
+                        << fullCache << " / " << scoreCache << std::endl;
+                scoreCache = 0;
+                fullCache = 0;
+                std::cout << "菜谱：" << s.recipe[i - 2]->name << "；"
+                        << s.recipe[i - 1]->name << "；" << s.recipe[i]->name
+                        << std::endl;
+            }
+        }
+        int bestFull4 = banquetRule4(rule2, s);
+        int totalScore4 = 0;
+        int totalFull4 = 0;
+        int scoreCache4 = 0;
+        int fullCache4 = 0;
+        for (int i = 0+9+9+9; i < 9+9+9+9; i++) {
+            if ((log & 0x10) && i % 3 == 0) {
+                std::cout << "VERBOSE************" << std::endl;
+                s.chef[i / 3]->print();
+                std::cout << "************" << std::endl;
+            }
+            bi2[i] = getPrice(s.chef[i / 3], s.recipe[i], rule2[i], (log & 0x10));
+            totalFull4 += bi2[i].full;
+            totalScore4 += bi2[i].price;
+            scoreCache4 += bi2[i].price;
+            fullCache4 += bi2[i].full;
+            if ((log & 0x1) && i % 3 == 2) {
+                std::cout << "厨师：" << s.chef[i / 3]->name << " -> "
+                        << fullCache << " / " << scoreCache << std::endl;
+                scoreCache = 0;
+                fullCache = 0;
+                std::cout << "菜谱：" << s.recipe[i - 2]->name << "；"
+                        << s.recipe[i - 1]->name << "；" << s.recipe[i]->name
+                        << std::endl;
+            }
+        }
+        int bestFull5 = banquetRule5(rule2, s);
+        int totalScore5 = 0;
+        int totalFull5 = 0;
+        int scoreCache5 = 0;
+        int fullCache5 = 0;
+        for (int i = 0+9+9+9+9; i < 9+9+9+9+9; i++) {
+            if ((log & 0x10) && i % 3 == 0) {
+                std::cout << "VERBOSE************" << std::endl;
+                s.chef[i / 3]->print();
+                std::cout << "************" << std::endl;
+            }
+            bi2[i] = getPrice(s.chef[i / 3], s.recipe[i], rule2[i], (log & 0x10));
+            totalFull5 += bi2[i].full;
+            totalScore5 += bi2[i].price;
+            scoreCache5 += bi2[i].price;
+            fullCache5 += bi2[i].full;
+            if ((log & 0x1) && i % 3 == 2) {
+                std::cout << "厨师：" << s.chef[i / 3]->name << " -> "
+                            << fullCache << " / " << scoreCache << std::endl;
+                scoreCache = 0;
+                fullCache = 0;
+                std::cout << "菜谱：" << s.recipe[i - 2]->name << "；"
+                            << s.recipe[i - 1]->name << "；" << s.recipe[i]->name
+                            << std::endl;
+            }
+        }
         // std::cout << "log:" << log << std::endl;
-        switch (totalFull == bestFull && totalFull2== bestFull2) {
+        switch (totalFull == bestFull && totalFull2== bestFull2 && totalFull3== bestFull3 && totalFull4== bestFull4 && totalFull5== bestFull5) {
         // switch (totalFull2== bestFull2) {
         case true:
-            return std::ceil(totalScore*1.3+totalScore2 * 1.3);
+            return std::ceil(totalScore*1.3+totalScore2 * 1.3+totalScore3 * 1.3+totalScore4 * 1.3+totalScore5 * 1.3);
         default:
             int delta = std::abs(totalFull - bestFull);
             int delta2 = std::abs(totalFull2 - bestFull2);
