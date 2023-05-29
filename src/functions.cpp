@@ -173,8 +173,37 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
         }
     }
     if (MODE == 1) {
+        
+        BanquetRule rule2[18];
+        int bestFull2 = banquetRule(rule2, s);
+        BanquetInfo bi2[18];
+        int totalScore2 = 0;
+        int totalFull2 = 0;
+        int scoreCache2 = 0;
+        int fullCache2 = 0;
+        for (int i = 9; i < 18; i++) {
+            if ((log & 0x10) && i % 3 == 0) {
+                std::cout << "VERBOSE************" << std::endl;
+                s.chef[i / 3]->print();
+                std::cout << "************" << std::endl;
+            }
+            bi2[i] = getPrice(s.chef[i / 3], s.recipe[i], rule2[i], (log & 0x10));
+            totalFull2 += bi2[i].full;
+            totalScore2 += bi2[i].price;
+            scoreCache2 += bi2[i].price;
+            fullCache2 += bi2[i].full;
+            if ((log & 0x1) && i % 3 == 2) {
+                std::cout << "厨师：" << s.chef[i / 3]->name << " -> "
+                          << fullCache2 << " / " << scoreCache2 << std::endl;
+                scoreCache2 = 0;
+                fullCache2= 0;
+                std::cout << "菜谱：" << s.recipe[i - 2]->name << "；"
+                          << s.recipe[i - 1]->name << "；" << s.recipe[i]->name
+                          << std::endl;
+            }
+        }
         BanquetRule rule[9];
-        int bestFull = banquetRule(rule, s);
+        int bestFull = banquetRule2(rule, s);
         BanquetInfo bi[9];
         int totalScore = 0;
         int totalFull = 0;
@@ -202,12 +231,15 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
             }
         }
         // std::cout << "log:" << log << std::endl;
-        switch (totalFull - bestFull) {
-        case 0:
-            return std::ceil(totalScore * 1.3);
+        switch (totalFull == bestFull && totalFull2== bestFull2) {
+        // switch (totalFull2== bestFull2) {
+        case true:
+            return std::ceil(totalScore*1.3+totalScore2 * 1.3);
         default:
             int delta = std::abs(totalFull - bestFull);
-            return std::ceil(totalScore * (1 - 0.05 * delta));
+            int delta2 = std::abs(totalFull2 - bestFull2);
+            return std::ceil(totalScore * (1 - 0.05 * delta) + totalScore2 *(1-0.05*delta2));
+            // return std::ceil(totalScore2 *(1-0.05*delta2));
         }
     } else if (MODE == 2 || MODE == 0) {
         ActivityBuff activityBuff;
