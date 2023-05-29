@@ -174,6 +174,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
     }
     if (MODE == 1) {
         
+        // 玉贵人
         BanquetRule rule2[18];
         int bestFull2 = banquetRule(rule2, s);
         BanquetInfo bi2[18];
@@ -181,7 +182,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
         int totalFull2 = 0;
         int scoreCache2 = 0;
         int fullCache2 = 0;
-        for (int i = 9; i < 18; i++) {
+        for (int i = 0; i < 9; i++) {
             if ((log & 0x10) && i % 3 == 0) {
                 std::cout << "VERBOSE************" << std::endl;
                 s.chef[i / 3]->print();
@@ -202,24 +203,23 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
                           << std::endl;
             }
         }
-        BanquetRule rule[9];
-        int bestFull = banquetRule2(rule, s);
-        BanquetInfo bi[9];
+        // 苏妲己
+        int bestFull = banquetRule2(rule2, s);
         int totalScore = 0;
         int totalFull = 0;
         int scoreCache = 0;
         int fullCache = 0;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0+9; i < 9+9; i++) {
             if ((log & 0x10) && i % 3 == 0) {
                 std::cout << "VERBOSE************" << std::endl;
                 s.chef[i / 3]->print();
                 std::cout << "************" << std::endl;
             }
-            bi[i] = getPrice(s.chef[i / 3], s.recipe[i], rule[i], (log & 0x10));
-            totalFull += bi[i].full;
-            totalScore += bi[i].price;
-            scoreCache += bi[i].price;
-            fullCache += bi[i].full;
+            bi2[i] = getPrice(s.chef[i / 3], s.recipe[i], rule2[i], (log & 0x10));
+            totalFull += bi2[i].full;
+            totalScore += bi2[i].price;
+            scoreCache += bi2[i].price;
+            fullCache += bi2[i].full;
             if ((log & 0x1) && i % 3 == 2) {
                 std::cout << "厨师：" << s.chef[i / 3]->name << " -> "
                           << fullCache << " / " << scoreCache << std::endl;
