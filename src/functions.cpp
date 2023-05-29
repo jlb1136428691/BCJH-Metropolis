@@ -174,9 +174,9 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
     }
     if (MODE == 1) {
         
-        // 玉贵人
+        // 第一个贵客
         BanquetRule rule2[18];
-        int bestFull2 = banquetRule(rule2, s);
+        int bestFull2 = banquetRule3(rule2, s);
         BanquetInfo bi2[18];
         int totalScore2 = 0;
         int totalFull2 = 0;
@@ -203,7 +203,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
                           << std::endl;
             }
         }
-        // 苏妲己
+        // 第二个贵客
         int bestFull = banquetRule2(rule2, s);
         int totalScore = 0;
         int totalFull = 0;
