@@ -47,6 +47,9 @@ int getPrice(Chef &chef, Recipe &recipe, ActivityBuff *activityBuff,
                     recipe.cookAbility * chef.skill.abilityBuff +
                     recipe.materialCategories * chef.skill.materialBuff +
                     rb.dishBuff;
+    if (recipe.rarity == chef.skill.rarityBuff.dishNum) {
+        skillBuff += chef.skill.rarityBuff.dishBuff;
+    }
     int buff = gradebuff + skillBuff +
                (chef.coinBuffOn ? chef.skill.coinBuff : 0) + activityBuffValue;
     // std::cout << buff << std::endl;

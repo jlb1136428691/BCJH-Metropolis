@@ -1,7 +1,7 @@
 #ifndef VALUE_HPP
 #define VALUE_HPP
-#include <iostream>
 #include "include/json/json.h"
+#include <iostream>
 class MaterialCategoryBuff {
   public:
     int vegetable;
@@ -100,6 +100,23 @@ class CookAbility : public Ability {
     void print() { this->Ability::print("CookAbility: "); }
     int operator*(const AbilityBuff &a);
 };
+class RarityBuff {
+  public:
+    int dishNum;
+    int dishBuff;
+
+    RarityBuff() : dishNum(0), dishBuff(0) {}
+    RarityBuff(int dishNum, int dishBuff)
+        : dishNum(dishNum), dishBuff(dishBuff) {}
+    void add(const RarityBuff &r) {
+        this->dishNum += r.dishNum;
+        this->dishBuff += r.dishBuff;
+    }
+    void print() {
+        std::cout << "RarityBuff: DishNum: " << this->dishBuff
+                  << "; DishBuff: " << this->dishBuff << std::endl;
+    }
+};
 class Skill {
   private:
   public:
@@ -109,16 +126,21 @@ class Skill {
     FlavorBuff flavorBuff;
     MaterialCategoryBuff materialBuff;
     int coinBuff;
+    RarityBuff rarityBuff;
+
     Skill(CookAbility ability, AbilityBuff abilityBuff, FlavorBuff flavorBuff,
-          MaterialCategoryBuff materialBuff, int coinBuff)
+          MaterialCategoryBuff materialBuff, int coinBuff,
+          RarityBuff(rarityBuff))
         : ability(ability), abilityBuff(abilityBuff), flavorBuff(flavorBuff),
-          materialBuff(materialBuff), coinBuff(coinBuff) {}
+          materialBuff(materialBuff), coinBuff(coinBuff),
+          rarityBuff(rarityBuff) {}
     Skill() {
         this->ability = CookAbility();
         this->abilityBuff = AbilityBuff();
         this->flavorBuff = FlavorBuff();
         this->materialBuff = MaterialCategoryBuff();
         this->coinBuff = 0;
+        this->rarityBuff = RarityBuff();
     }
     Skill getSkill(int id) { return skillList[id]; }
     static void loadJson(Json::Value &v);
@@ -128,6 +150,7 @@ class Skill {
         this->flavorBuff.add(s.flavorBuff);
         this->materialBuff.add(s.materialBuff);
         this->coinBuff += s.coinBuff;
+        this->rarityBuff.add(s.rarityBuff);
     }
     void print() {
         this->ability.print();
@@ -135,6 +158,7 @@ class Skill {
         this->flavorBuff.print();
         this->materialBuff.print();
         std::cout << "CoinBuff: " << this->coinBuff << std::endl;
+        this->rarityBuff.print();
     }
 };
 enum AbilityEnum {
