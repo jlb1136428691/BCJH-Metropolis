@@ -14,7 +14,8 @@
 // 风云宴-玉贵人
 int banquetRule(BanquetRule *const &rule, States &s) {
     BanquetStrictRule
-        *strictRule[NUM_CHEFS * DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
     BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
     int d = 0;
 
@@ -126,7 +127,8 @@ int banquetRule(BanquetRule *const &rule, States &s) {
 // 风云宴-苏妲己
 int banquetRule2(BanquetRule *const &rule, States &s) {
     BanquetStrictRule
-        *strictRule[NUM_CHEFS * DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
     BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
     int d = 9;
 
@@ -230,7 +232,8 @@ int banquetRule2(BanquetRule *const &rule, States &s) {
 // 风云宴-蓝采和
 int banquetRule3(BanquetRule *const &rule, States &s) {
     BanquetStrictRule
-        *strictRule[NUM_CHEFS * DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
     BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
     int d = 9 * 2;
 
@@ -257,7 +260,7 @@ int banquetRule3(BanquetRule *const &rule, States &s) {
             break;
         }
     }
-    // 条件：三道蒸：下阶段烤技法料理基础售价+100%
+    // 条件：三道蒸：下阶段烤技法料理基础售价+50%
     if (s.recipe[d + 0]->cookAbility.steam > 0 &&
         s.recipe[d + 1]->cookAbility.steam > 0 &&
         s.recipe[d + 2]->cookAbility.steam > 0) {
@@ -267,7 +270,7 @@ int banquetRule3(BanquetRule *const &rule, States &s) {
             }
         }
     }
-    // 条件：三道煮：下阶段炸技法料理基础售价+100%
+    // 条件：三道煮：下阶段炸技法料理基础售价+50%
     if (s.recipe[d + 0]->cookAbility.boil > 0 &&
         s.recipe[d + 1]->cookAbility.boil > 0 &&
         s.recipe[d + 2]->cookAbility.boil > 0) {
@@ -336,7 +339,8 @@ int banquetRule3(BanquetRule *const &rule, States &s) {
 // 风云宴-吕洞宾
 int banquetRule4(BanquetRule *const &rule, States &s) {
     BanquetStrictRule
-        *strictRule[NUM_CHEFS * DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
     BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
     int d = 9 * 3;
 
@@ -439,7 +443,8 @@ int banquetRule4(BanquetRule *const &rule, States &s) {
 // 风云宴-韩湘子
 int banquetRule5(BanquetRule *const &rule, States &s) {
     BanquetStrictRule
-        *strictRule[NUM_CHEFS * DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
     BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
     int d = 9 * 4;
 
@@ -561,4 +566,29 @@ int choose(BanquetRule *const &rule, States &s, int num) {
     }
 }
 
+void tangyuan(BanquetRule *const &rule, States &s) {
+    BanquetStrictRule
+        *strictRule[NUM_CHEFS *
+                    DISH_PER_CHEF]; // 下一阶段的规则，不受意图生效次数的影响
+    BanquetLenientRule *lenientRule[NUM_CHEFS * DISH_PER_CHEF];
+    for (int i = 0; i < NUM_CHEFS * DISH_PER_CHEF; i++) {
+        strictRule[i] = &rule[i].strictRule;
+        lenientRule[i] = &rule[i].lenientRule;
+    }
+    for (int i = 0; i < NUM_CHEFS * DISH_PER_CHEF; i++) {
+        if (s.chef[i / 3]->name.find("汤圆") != -1 &&
+            s.chef[i / 3]->skill.rarityBuff.dishNum == 99) {
+            for (int j = i; j < i + 3; j++) {
+
+                if (s.chef[i / 3]->skill.ability / s.recipe[j]->cookAbility >=
+                    4) {
+                    lenientRule[i]->baseRule.buff += 5;
+                    lenientRule[i + 1]->baseRule.buff += 5;
+                    lenientRule[i + 2]->baseRule.buff += 5;
+                }
+            }
+            return;
+        }
+    }
+}
 #endif

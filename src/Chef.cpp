@@ -210,6 +210,11 @@ void Skill::loadJson(Json::Value &v) {
                     skill->rarityBuff.dishNum = num;
                     skill->rarityBuff.dishBuff = value;
                 }
+                // else if (type == "BasicPrice") {
+                //     int num = effect["conditionValue"].asInt();
+                //     skill->rarityBuff.dishNum = 99;
+                //     skill->rarityBuff.dishBuff = 5;
+                // }
             }
         }
     }
