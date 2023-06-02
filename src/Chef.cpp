@@ -1,13 +1,13 @@
-#include "include/json/json.h"
 #include "Chef.hpp"
-#include <string>
+#include "../config.hpp"
+#include "../toolEquipped.hpp"
+#include "Calculator.hpp"
+#include "include/json/json.h"
+#include "utils/json.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
-#include "../config.hpp"
-#include "Calculator.hpp"
-#include "utils/json.hpp"
-#include "../toolEquipped.hpp"
+#include <string>
 // #define jsonStr2Int(v) atoi(v.asCString())
 CookAbility Chef::globalAbilityBuff;
 int Chef::globalAbilityMale = 0;
@@ -65,7 +65,12 @@ void loadChef(std::map<int, Chef> &chefList) {
             if (AVOID_CHEF_3 && chef["rarity"].asInt() == 3) {
                 continue;
             }
-
+            if (AVOID_CHEF_4 && chef["rarity"].asInt() == 4) {
+                continue;
+            }
+            if (AVOID_CHEF_5 && chef["rarity"].asInt() == 5) {
+                continue;
+            }
             if (ultimateSkills.find(id) != ultimateSkills.end()) {
                 chefList[id] = Chef(chef, ultimateSkills[id]);
             } else {
@@ -158,6 +163,7 @@ void Skill::loadJson(Json::Value &v) {
             auto skill = &skillList[id];
             if (effect["condition"].asString() != "Global") {
                 std::string type = effect["type"].asString();
+                std::string condition = effect["condition"].asString();
                 int value = effect["value"].asInt();
                 if (type == "Gold_Gain") {
                     skill->coinBuff = value;
@@ -206,15 +212,27 @@ void Skill::loadJson(Json::Value &v) {
                 } else if (type == "UseCreation") {
                     skill->materialBuff.creation = value;
                 } else if (type == "CookbookPrice") {
-                    int num = effect["conditionValue"].asInt();
-                    skill->rarityBuff.dishNum = num;
-                    skill->rarityBuff.dishBuff = value;
+                    std::string conditionType =
+                        effect["conditionType"].asString();
+                    if (conditionType == "CookbookRarity") {
+                        int num = effect["conditionValue"].asInt();
+                        skill->rarityBuff.dishNum = num;
+                        skill->rarityBuff.dishBuff = value;
+                    }
+                    // 乌龙
+                    if (conditionType == "ExcessCookbookNum") {
+                        int num = effect["conditionValue"].asInt();
+                        skill->rarityBuff.dishNum = num;
+                        skill->rarityBuff.dishBuff = value;
+                    }
+
                 }
-                // else if (type == "BasicPrice") {
-                //     int num = effect["conditionValue"].asInt();
-                //     skill->rarityBuff.dishNum = 99;
-                //     skill->rarityBuff.dishBuff = 5;
-                // }
+                // 汤圆
+                else if (type == "BasicPrice" && condition == "Self") {
+                    int num = effect["conditionValue"].asInt();
+                    skill->rarityBuff.dishNum = 99;
+                    skill->rarityBuff.dishBuff = 5;
+                }
             }
         }
     }

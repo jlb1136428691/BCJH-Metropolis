@@ -117,6 +117,12 @@ BanquetInfo getPrice(Chef *chef, Recipe *recipe, BanquetRule r, bool verbose) {
                     rb.dishBuff + (chef->coinBuffOn ? chef->skill.coinBuff : 0);
     if (recipe->rarity == chef->skill.rarityBuff.dishNum) {
         skillBuff += chef->skill.rarityBuff.dishBuff;
+    } else {
+        // 乌龙
+        if (chef->skill.rarityBuff.dishNum == 22 && rb.dishNum > 21) {
+
+            skillBuff += 50;
+        }
     }
 
     int buff = gradebuff + skillBuff + intentionAddBuff;
@@ -125,7 +131,7 @@ BanquetInfo getPrice(Chef *chef, Recipe *recipe, BanquetRule r, bool verbose) {
                   (1.0 + intentionBaseBuff / 100.0) * (1.0 + buff / 100.0));
     // std::cout << singlePrice << std::endl;
     int totalPrice = singlePrice * rb.dishNum;
-    
+
     if (verbose) {
         // chef->print();
         recipe->print();

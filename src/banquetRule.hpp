@@ -576,8 +576,7 @@ void tangyuan(BanquetRule *const &rule, States &s) {
         lenientRule[i] = &rule[i].lenientRule;
     }
     for (int i = 0; i < NUM_CHEFS * DISH_PER_CHEF; i++) {
-        if (s.chef[i / 3]->name.find("汤圆") != -1 &&
-            s.chef[i / 3]->skill.rarityBuff.dishNum == 99) {
+        if (s.chef[i / 3]->skill.rarityBuff.dishNum == 99) {
             for (int j = i; j < i + 3; j++) {
 
                 if (s.chef[i / 3]->skill.ability / s.recipe[j]->cookAbility >=
