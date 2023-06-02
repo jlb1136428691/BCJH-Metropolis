@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#define NUM_CHEFS 6
+#define NUM_CHEFS 15
 #define DISH_PER_CHEF 3
 
 #define MODE 1 // 1:宴会模式; 2:限时任务
@@ -16,7 +16,8 @@
 #define AVOID_CHEF_1 true
 #define AVOID_CHEF_2 true
 #define AVOID_CHEF_3 true // 计算时不考虑三火厨师
-#define AVOID_CHEF_4 false // 计算时不考虑三火厨师
+#define AVOID_CHEF_4 false
+#define AVOID_CHEF_5 true
 
 // ************************************************** //
 // ** 以下内容不建议修改，除非你清楚地知道这是什么意思 ** //
