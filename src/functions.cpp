@@ -177,7 +177,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
 
         // 第一个贵客
         BanquetRule rule[NUM_CHEFS * DISH_PER_CHEF];
-        std::vector<int> v = {1, 2, 3, 4, 5};
+        std::vector<int> v = {3, 6, 7};
         BanquetInfo bi[NUM_CHEFS * DISH_PER_CHEF];
         int ans = 0;
         // tangyuan(rule,s);
@@ -186,7 +186,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
             int totalFull = 0;
             int scoreCache = 0;
             int fullCache = 0;
-            int bestFull = choose(rule, s, v[j]);
+            int bestFull = choose(rule, s, v[j], j);
             for (int i = 9 * j; i < 9 * (j + 1); i++) {
                 if ((log & 0x10) && i % 3 == 0) {
                     std::cout << "VERBOSE************" << std::endl;

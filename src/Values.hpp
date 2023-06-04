@@ -117,6 +117,32 @@ class RarityBuff {
                   << "; DishBuff: " << this->dishBuff << std::endl;
     }
 };
+class HaloBuff {
+  public:
+    int stirfry;
+    int steam;
+    int boil;
+    int bake;
+    int knife;
+    int fry;
+    int useFry;
+
+    HaloBuff()
+        : stirfry(0), steam(0), boil(0), bake(0), knife(0), fry(0), useFry(0) {}
+    HaloBuff(int stirfry, int steam, int boil, int bake, int knife, int fry,
+             int useFry)
+        : stirfry(stirfry), steam(steam), boil(boil), bake(bake), knife(knife),
+          fry(fry), useFry(useFry) {}
+    void add(const HaloBuff &a) {
+        this->stirfry += a.stirfry;
+        this->bake += a.bake;
+        this->boil += a.boil;
+        this->steam += a.steam;
+        this->fry += a.fry;
+        this->knife += a.knife;
+        this->useFry += a.useFry;
+    }
+};
 class Skill {
   private:
   public:
@@ -127,13 +153,15 @@ class Skill {
     MaterialCategoryBuff materialBuff;
     int coinBuff;
     RarityBuff rarityBuff;
+    bool halo;
+    HaloBuff haloBuff;
 
     Skill(CookAbility ability, AbilityBuff abilityBuff, FlavorBuff flavorBuff,
           MaterialCategoryBuff materialBuff, int coinBuff,
-          RarityBuff(rarityBuff))
+          RarityBuff(rarityBuff), bool halo, HaloBuff(haloBuff))
         : ability(ability), abilityBuff(abilityBuff), flavorBuff(flavorBuff),
           materialBuff(materialBuff), coinBuff(coinBuff),
-          rarityBuff(rarityBuff) {}
+          rarityBuff(rarityBuff), halo(halo), haloBuff(haloBuff) {}
     Skill() {
         this->ability = CookAbility();
         this->abilityBuff = AbilityBuff();
@@ -141,6 +169,8 @@ class Skill {
         this->materialBuff = MaterialCategoryBuff();
         this->coinBuff = 0;
         this->rarityBuff = RarityBuff();
+        this->halo = false;
+        this->haloBuff = HaloBuff();
     }
     Skill getSkill(int id) { return skillList[id]; }
     static void loadJson(Json::Value &v);
@@ -151,6 +181,8 @@ class Skill {
         this->materialBuff.add(s.materialBuff);
         this->coinBuff += s.coinBuff;
         this->rarityBuff.add(s.rarityBuff);
+        this->halo = halo;
+        this->haloBuff.add(s.haloBuff);
     }
     void print() {
         this->ability.print();

@@ -161,7 +161,7 @@ void Skill::loadJson(Json::Value &v) {
         skillList[id] = Skill();
         for (auto effect : skill["effect"]) {
             auto skill = &skillList[id];
-            if (effect["condition"].asString() != "Global") {
+            if (effect["condition"].asString() == "Self") {
                 std::string type = effect["type"].asString();
                 std::string condition = effect["condition"].asString();
                 int value = effect["value"].asInt();
@@ -232,6 +232,34 @@ void Skill::loadJson(Json::Value &v) {
                     int num = effect["conditionValue"].asInt();
                     skill->rarityBuff.dishNum = 99;
                     skill->rarityBuff.dishBuff = 5;
+                }
+            }
+            if (effect["condition"].asString() == "Partial") {
+                std::string type = effect["type"].asString();
+                std::string condition = effect["condition"].asString();
+                int value = effect["value"].asInt();
+                // 只考虑目前存在的技法和售价光环，后续如果有新的再加
+                if (type == "Stirfry") {
+                    skill->halo = true;
+                    skill->haloBuff.stirfry = value;
+                } else if (type == "Bake") {
+                    skill->halo = true;
+                    skill->haloBuff.bake = value;
+                } else if (type == "Boil") {
+                    skill->halo = true;
+                    skill->haloBuff.boil = value;
+                } else if (type == "Steam") {
+                    skill->halo = true;
+                    skill->haloBuff.steam = value;
+                } else if (type == "Fry") {
+                    skill->halo = true;
+                    skill->haloBuff.fry = value;
+                } else if (type == "Knife") {
+                    skill->halo = true;
+                    skill->haloBuff.knife = value;
+                } else if (type == "UseFry") {
+                    skill->halo = true;
+                    skill->haloBuff.useFry = value;
                 }
             }
         }
