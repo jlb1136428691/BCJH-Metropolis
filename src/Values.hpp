@@ -117,31 +117,21 @@ class RarityBuff {
                   << "; DishBuff: " << this->dishBuff << std::endl;
     }
 };
-class HaloBuff {
+// 技法光环
+class SkillHalo : public Ability {
   public:
-    int stirfry;
-    int steam;
-    int boil;
-    int bake;
-    int knife;
-    int fry;
-    int useFry;
-
-    HaloBuff()
-        : stirfry(0), steam(0), boil(0), bake(0), knife(0), fry(0), useFry(0) {}
-    HaloBuff(int stirfry, int steam, int boil, int bake, int knife, int fry,
-             int useFry)
-        : stirfry(stirfry), steam(steam), boil(boil), bake(bake), knife(knife),
-          fry(fry), useFry(useFry) {}
-    void add(const HaloBuff &a) {
-        this->stirfry += a.stirfry;
-        this->bake += a.bake;
-        this->boil += a.boil;
-        this->steam += a.steam;
-        this->fry += a.fry;
-        this->knife += a.knife;
-        this->useFry += a.useFry;
-    }
+    SkillHalo(int stirfry, int bake, int boil, int steam, int fry, int knife)
+        : Ability(stirfry, bake, boil, steam, fry, knife) {}
+    SkillHalo() : Ability() {}
+    void print() { this->Ability::print("SkillHalo: "); }
+};
+// 售价光环
+class BuffHalo : public Ability {
+  public:
+    BuffHalo(int stirfry, int bake, int boil, int steam, int fry, int knife)
+        : Ability(stirfry, bake, boil, steam, fry, knife) {}
+    BuffHalo() : Ability() {}
+    void print() { this->Ability::print("BuffHalo: "); }
 };
 class Skill {
   private:
@@ -154,14 +144,17 @@ class Skill {
     int coinBuff;
     RarityBuff rarityBuff;
     bool halo;
-    HaloBuff haloBuff;
+    SkillHalo skillHalo;
+    BuffHalo buffHalo;
 
     Skill(CookAbility ability, AbilityBuff abilityBuff, FlavorBuff flavorBuff,
           MaterialCategoryBuff materialBuff, int coinBuff,
-          RarityBuff(rarityBuff), bool halo, HaloBuff(haloBuff))
+          RarityBuff(rarityBuff), bool halo, SkillHalo(skillHalo),
+          BuffHalo(buffHalo))
         : ability(ability), abilityBuff(abilityBuff), flavorBuff(flavorBuff),
           materialBuff(materialBuff), coinBuff(coinBuff),
-          rarityBuff(rarityBuff), halo(halo), haloBuff(haloBuff) {}
+          rarityBuff(rarityBuff), halo(halo), skillHalo(skillHalo),
+          buffHalo(buffHalo) {}
     Skill() {
         this->ability = CookAbility();
         this->abilityBuff = AbilityBuff();
@@ -170,7 +163,8 @@ class Skill {
         this->coinBuff = 0;
         this->rarityBuff = RarityBuff();
         this->halo = false;
-        this->haloBuff = HaloBuff();
+        this->skillHalo = SkillHalo();
+        this->buffHalo = BuffHalo();
     }
     Skill getSkill(int id) { return skillList[id]; }
     static void loadJson(Json::Value &v);
@@ -181,8 +175,9 @@ class Skill {
         this->materialBuff.add(s.materialBuff);
         this->coinBuff += s.coinBuff;
         this->rarityBuff.add(s.rarityBuff);
-        this->halo = halo;
-        this->haloBuff.add(s.haloBuff);
+        this->halo = s.halo;
+        this->skillHalo.add(s.skillHalo);
+        this->buffHalo.add(s.buffHalo);
     }
     void print() {
         this->ability.print();
@@ -191,6 +186,9 @@ class Skill {
         this->materialBuff.print();
         std::cout << "CoinBuff: " << this->coinBuff << std::endl;
         this->rarityBuff.print();
+        std::cout << "Halo: " << this->halo << std::endl;
+        this->skillHalo.print();
+        this->buffHalo.print();
     }
 };
 enum AbilityEnum {

@@ -1,17 +1,17 @@
-#include <iostream>
-#include <string>
+#include "../config.hpp"
+#include "Calculator.hpp"
 #include "Chef.hpp"
 #include "Recipe.hpp"
-#include <map>
-#include "Calculator.hpp"
-#include <vector>
 #include "SARunner.hpp"
 #include "functions.hpp"
-#include "../config.hpp"
-#include <unistd.h>
-#include <stdio.h>
 #include <fstream>
+#include <iostream>
+#include <map>
+#include <stdio.h>
+#include <string>
 #include <time.h>
+#include <unistd.h>
+#include <vector>
 bool Chef::coinBuffOn = true;
 void initChefRecipePairs(CRPairs &, std::map<int, Chef> &,
                          std::map<int, Recipe> &);
@@ -81,7 +81,8 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                       f::t_dist_fast);
     // std::cout << log << std::endl;
     States s = saRunner.run(NULL, true, silent);
-
+    // 判断光环
+    halo(s);
     std::cout << std::endl;
     log += 0x1;
     int score =
@@ -95,6 +96,21 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
         saRunnerPrint.run(s.chef, false, silent, "../out/recipe");
     }
     return score;
+}
+// 判断光环
+void halo(States s) {
+    for (int i = 0; i < NUM_GUESTS; i++) {
+        for (int j = i * CHEFS_PER_GUEST; j < CHEFS_PER_GUEST * (i + 1); j++) {
+            if (s.chef[j]->skill.halo) {
+                SkillHalo skillHalo = s.chef[j]->skill.skillHalo;
+                BuffHalo buffHalo = s.chef[j]->skill.buffHalo;
+                for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                    s.chef[k]->skill.ability.add(skillHalo);
+                    s.chef[k]->skill.abilityBuff.add(buffHalo);
+                }
+            }
+        }
+    }
 }
 
 void initChefRecipePairs(CRPairs &chefRecipePairs,

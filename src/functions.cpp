@@ -180,7 +180,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
         std::vector<int> v = {3, 6, 7};
         BanquetInfo bi[NUM_CHEFS * DISH_PER_CHEF];
         int ans = 0;
-        // tangyuan(rule,s);
+        tangyuan(rule,s);
         for (int j = 0; j < v.size(); j++) {
             int totalScore = 0;
             int totalFull = 0;

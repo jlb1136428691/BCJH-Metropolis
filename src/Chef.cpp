@@ -120,6 +120,7 @@ Chef::Chef(Json::Value &chef, int ultimateSkillId) {
     if (ultimateSkillId != -1) {
         this->addSkill(ultimateSkillId);
     }
+    // this->print();
     this->tool = -1;
 }
 
@@ -241,25 +242,25 @@ void Skill::loadJson(Json::Value &v) {
                 // 只考虑目前存在的技法和售价光环，后续如果有新的再加
                 if (type == "Stirfry") {
                     skill->halo = true;
-                    skill->haloBuff.stirfry = value;
+                    skill->skillHalo.stirfry = value;
                 } else if (type == "Bake") {
                     skill->halo = true;
-                    skill->haloBuff.bake = value;
+                    skill->skillHalo.bake = value;
                 } else if (type == "Boil") {
                     skill->halo = true;
-                    skill->haloBuff.boil = value;
+                    skill->skillHalo.boil = value;
                 } else if (type == "Steam") {
                     skill->halo = true;
-                    skill->haloBuff.steam = value;
+                    skill->skillHalo.steam = value;
                 } else if (type == "Fry") {
                     skill->halo = true;
-                    skill->haloBuff.fry = value;
+                    skill->skillHalo.fry = value;
                 } else if (type == "Knife") {
                     skill->halo = true;
-                    skill->haloBuff.knife = value;
+                    skill->skillHalo.knife = value;
                 } else if (type == "UseFry") {
                     skill->halo = true;
-                    skill->haloBuff.useFry = value;
+                    skill->buffHalo.fry = value;
                 }
             }
         }
