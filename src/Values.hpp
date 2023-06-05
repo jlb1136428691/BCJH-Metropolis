@@ -133,6 +133,14 @@ class BuffHalo : public Ability {
     BuffHalo() : Ability() {}
     void print() { this->Ability::print("BuffHalo: "); }
 };
+// 下一个技法+X
+class SkillNext : public Ability {
+  public:
+    SkillNext(int stirfry, int bake, int boil, int steam, int fry, int knife)
+        : Ability(stirfry, bake, boil, steam, fry, knife) {}
+    SkillNext() : Ability() {}
+    void print() { this->Ability::print("SkillNext: "); }
+};
 class Skill {
   private:
   public:
@@ -146,15 +154,17 @@ class Skill {
     bool halo;
     SkillHalo skillHalo;
     BuffHalo buffHalo;
+    bool next;
+    SkillNext skillNext;
 
     Skill(CookAbility ability, AbilityBuff abilityBuff, FlavorBuff flavorBuff,
           MaterialCategoryBuff materialBuff, int coinBuff,
           RarityBuff(rarityBuff), bool halo, SkillHalo(skillHalo),
-          BuffHalo(buffHalo))
+          BuffHalo(buffHalo),bool next, SkillNext(skillNext))
         : ability(ability), abilityBuff(abilityBuff), flavorBuff(flavorBuff),
           materialBuff(materialBuff), coinBuff(coinBuff),
           rarityBuff(rarityBuff), halo(halo), skillHalo(skillHalo),
-          buffHalo(buffHalo) {}
+          buffHalo(buffHalo),next(next), skillNext(skillNext) {}
     Skill() {
         this->ability = CookAbility();
         this->abilityBuff = AbilityBuff();
@@ -165,6 +175,8 @@ class Skill {
         this->halo = false;
         this->skillHalo = SkillHalo();
         this->buffHalo = BuffHalo();
+        this->next = false;
+        this->skillNext = SkillNext();
     }
     Skill getSkill(int id) { return skillList[id]; }
     static void loadJson(Json::Value &v);
@@ -178,6 +190,8 @@ class Skill {
         this->halo = s.halo;
         this->skillHalo.add(s.skillHalo);
         this->buffHalo.add(s.buffHalo);
+        this->next = s.next;
+        this->skillNext.add(s.skillNext);
     }
     void print() {
         this->ability.print();
@@ -189,6 +203,8 @@ class Skill {
         std::cout << "Halo: " << this->halo << std::endl;
         this->skillHalo.print();
         this->buffHalo.print();
+        std::cout << "Next: " << this->next << std::endl;
+        this->skillNext.print();
     }
 };
 enum AbilityEnum {

@@ -263,6 +263,31 @@ void Skill::loadJson(Json::Value &v) {
                     skill->buffHalo.fry = value;
                 }
             }
+            if (effect["condition"].asString() == "Next") {
+                std::string type = effect["type"].asString();
+                std::string condition = effect["condition"].asString();
+                int value = effect["value"].asInt();
+                // 只考虑目前存在的技法和售价光环，后续如果有新的再加
+                if (type == "Stirfry") {
+                    skill->next = true;
+                    skill->skillNext.stirfry = value;
+                } else if (type == "Bake") {
+                    skill->next = true;
+                    skill->skillNext.bake = value;
+                } else if (type == "Boil") {
+                    skill->next = true;
+                    skill->skillNext.boil = value;
+                } else if (type == "Steam") {
+                    skill->next = true;
+                    skill->skillNext.steam = value;
+                } else if (type == "Fry") {
+                    skill->next = true;
+                    skill->skillNext.fry = value;
+                } else if (type == "Knife") {
+                    skill->next = true;
+                    skill->skillNext.knife = value;
+                }
+            }
         }
     }
 }

@@ -81,9 +81,10 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                       f::t_dist_fast);
     // std::cout << log << std::endl;
     States s = saRunner.run(NULL, true, silent);
-    // 判断光环
+    
     for (int i = 0; i < NUM_GUESTS; i++) {
         for (int j = i * CHEFS_PER_GUEST; j < CHEFS_PER_GUEST * (i + 1); j++) {
+            // 判断光环
             if (s.chef[j]->skill.halo) {
                 SkillHalo skillHalo = s.chef[j]->skill.skillHalo;
                 BuffHalo buffHalo = s.chef[j]->skill.buffHalo;
@@ -92,6 +93,14 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                     s.chef[k]->skill.abilityBuff.add(buffHalo);
                 }
             }
+            if (s.chef[j]->skill.next) {
+                // 判断下一个是不是本轮的最后一个厨师
+                if (j + 1 < CHEFS_PER_GUEST * (i + 1)) {
+                    SkillNext skillNext = s.chef[j]->skill.skillNext;
+                    s.chef[j + 1]->skill.ability.add(skillNext);
+                }
+            }
+            // s.chef[j]->print();
         }
     }
     std::cout << std::endl;
