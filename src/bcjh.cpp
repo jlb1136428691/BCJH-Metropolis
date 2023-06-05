@@ -81,16 +81,61 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                       f::t_dist_fast);
     // std::cout << log << std::endl;
     States s = saRunner.run(NULL, true, silent);
-    
+
     for (int i = 0; i < NUM_GUESTS; i++) {
         for (int j = i * CHEFS_PER_GUEST; j < CHEFS_PER_GUEST * (i + 1); j++) {
             // 判断光环
             if (s.chef[j]->skill.halo) {
                 SkillHalo skillHalo = s.chef[j]->skill.skillHalo;
                 BuffHalo buffHalo = s.chef[j]->skill.buffHalo;
+                // 年糕
+                if (s.chef[j]->id == 1296) {
+                    if (s.recipe[3 * j]->cookAbility.stirfry > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.stirfry > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.stirfry > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                    if (s.recipe[3 * j]->cookAbility.bake > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.bake > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.bake > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                    if (s.recipe[3 * j]->cookAbility.boil > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.boil > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.boil > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                    if (s.recipe[3 * j]->cookAbility.steam > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.steam > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.steam > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                    if (s.recipe[3 * j]->cookAbility.fry > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.fry > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.fry > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                    if (s.recipe[3 * j]->cookAbility.knife > 0 &&
+                        s.recipe[3 * j + 1]->cookAbility.knife > 0 &&
+                        s.recipe[3 * j + 2]->cookAbility.knife > 0) {
+                        for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
+                            s.chef[k]->skill.abilityBuff.add(buffHalo);
+                        }
+                    }
+                }
                 for (int k = j; k < CHEFS_PER_GUEST * (i + 1); k++) {
                     s.chef[k]->skill.ability.add(skillHalo);
-                    s.chef[k]->skill.abilityBuff.add(buffHalo);
+                    // s.chef[k]->skill.abilityBuff.add(buffHalo);
                 }
             }
             if (s.chef[j]->skill.next) {
@@ -100,7 +145,7 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                     s.chef[j + 1]->skill.ability.add(skillNext);
                 }
             }
-            // s.chef[j]->print();
+            s.chef[j]->print();
         }
     }
     std::cout << std::endl;
