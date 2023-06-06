@@ -145,7 +145,7 @@ int run(CList &chefList, RList &recipeList, CRPairs &chefRecipePairs, int log,
                     s.chef[j + 1]->skill.ability.add(skillNext);
                 }
             }
-            s.chef[j]->print();
+            // s.chef[j]->print();
         }
     }
     std::cout << std::endl;
