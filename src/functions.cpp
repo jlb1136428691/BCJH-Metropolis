@@ -4,6 +4,7 @@
 #include "activityRule.hpp"
 #include "banquetRule.hpp"
 #include "exception.hpp"
+#include "set"
 #include "vector"
 
 namespace r0 {
@@ -19,12 +20,11 @@ int e::getTotalPrice(States s, CList *chefList, RList *recipeList,
                         false);
 }
 bool repeatChef(Chef *chef, Chef *chefs[NUM_CHEFS], int except) {
+    std::set<int> set;
     for (int i = 0; i < NUM_CHEFS; i++) {
-        if (except != i && chef->id == chefs[i]->id) {
-            return true;
-        }
+        set.insert(chefs[i]->id);
     }
-    return false;
+    return set.size() != NUM_CHEFS;
 }
 States r0::randomChef(States &s, CList *chefList, RList *recipeList,
                       CRPairs *chefRecipePairs) {
@@ -50,7 +50,7 @@ States r0::randomChef(States &s, CList *chefList, RList *recipeList,
 }
 States r0::swapRecipe(States &s, CList *chefList, RList *r,
                       CRPairs *chefRecipePairs) {
-    for (int i = 1; i < 10; i++) {
+    for (int i = 1; i < 28; i++) {
         int recipeNum1 = rand() % (NUM_CHEFS * DISH_PER_CHEF);
         int recipeNum2 = rand() % (NUM_CHEFS * DISH_PER_CHEF);
 
@@ -278,8 +278,8 @@ States r::randomChef(States s, CList *chefList, RList *recipeList,
     double r = (double)rand() / RAND_MAX;
     double p_randomChef = 0.9;
     if (MODE == 1)
-        p_randomChef = 0.85;
-    if (r < 0.1) {
+        p_randomChef = 0.9;
+    if (r < 0.05) {
         return r0::swapChefTool(s, chefList, recipeList, chefRecipePairs);
     } else if (r >= 1 - p_randomChef) {
         return r0::randomChef(s, chefList, recipeList, chefRecipePairs);
