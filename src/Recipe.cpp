@@ -1,14 +1,14 @@
+#include "Recipe.hpp"
+#include "../config.hpp"
+#include "Chef.hpp"
 #include "include/json/json.h"
-#include <string>
+#include "utils/json.hpp"
+#include <exception>
 #include <fstream>
 #include <iostream>
-#include <exception>
-#include "Chef.hpp"
-#include "Recipe.hpp"
+#include <string>
 #include <vector>
-#include "utils/json.hpp"
-#include "../config.hpp"
-Recipe::Recipe(Json::Value &recipe) {
+Recipe::Recipe(Json::Value &recipe, Json::Value &combosJson) {
     this->name = recipe["name"].asString();
     this->id = recipe["recipeId"].asInt();
     this->rarity = recipe["rarity"].asInt();
@@ -21,6 +21,7 @@ Recipe::Recipe(Json::Value &recipe) {
     this->cookAbility.knife = recipe["knife"].asInt();
     this->getMaterials(recipe["materials"]);
     this->flavor = this->getFlavor(recipe["condiment"]);
+    this->combos = this->getCombos(combosJson, recipe["recipeId"].asInt());
 }
 Flavor Recipe::getFlavor(Json::Value &flavorJson) {
     std::string flavorStr = flavorJson.asString();
@@ -32,6 +33,26 @@ Flavor Recipe::getFlavor(Json::Value &flavorJson) {
     flavor.spicy = flavorStr.find("Spicy") != std::string::npos;
     flavor.tasty = flavorStr.find("Tasty") != std::string::npos;
     return flavor;
+}
+// 后厨菜
+std::map<int, int> Recipe::getCombos(Json::Value &combosJson, int id) {
+    std::map<int, int> map;
+    if (id > 5000) {
+        std::map<int, int> map;
+        if (id == combosJson[id - 5001]["recipeId"].asInt()) {
+            auto re = combosJson[id - 5001]["recipes"];
+            for (int i = 0; i < re.size(); i++) {
+                map.insert(std::pair<int, int>(re[i].asInt(), 1));
+            }
+        }
+    }
+    return map;
+}
+void PrintMap(std::map<int, int> &m) {
+    std ::cout << "Combos: " << std::endl;
+    for (std::map<int, int>::iterator it = m.begin(); it != m.end(); it++) {
+        std::cout << "recipeId = " << it->first << std::endl;
+    }
 }
 const struct MaterialList {
     int meat[16] = {1, 3, 4, 5, 7, 8, 9, 12, 26, 27, 28, 38, 39, 40, 43, 44};
@@ -52,6 +73,7 @@ void Recipe::print() {
     this->materialCategories.print();
     this->cookAbility.print();
     this->flavor.print();
+    PrintMap(this->combos);
 }
 void loadRecipe(std::map<int, Recipe> &recipeList) {
     Json::Value usrData;
@@ -67,10 +89,11 @@ void loadRecipe(std::map<int, Recipe> &recipeList) {
     Recipe::initRarityBuff(usrData["userUltimate"]);
     auto recipes = gameData["recipes"];
     auto recipeGot = usrData["repGot"];
+    auto combos = gameData["combos"];
     for (auto recipe : recipes) {
         int id = recipe["recipeId"].asInt();
         if (recipeGot[std::to_string(id)].asBool()) {
-            recipeList[id] = Recipe(recipe);
+            recipeList[id] = Recipe(recipe, combos);
         }
     }
 }

@@ -21,5 +21,5 @@ class NoRecipeException : public std::exception {
     }
     NoRecipeException() throw() {}
 };
-#define RANDOM_SEARCH_TIMEOUT 100
+#define RANDOM_SEARCH_TIMEOUT ITER_CHEF
 #endif

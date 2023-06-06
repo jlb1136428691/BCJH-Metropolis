@@ -1,10 +1,10 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
+#include "../config.hpp"
 #include "Calculator.hpp"
 #include <algorithm>
 #include <cmath>
-#include "../config.hpp"
 typedef std::map<Chef *, std::vector<Recipe *>> CRPairs;
 typedef std::map<int, Chef> CList;
 typedef std::map<int, Recipe> RList;
@@ -28,6 +28,16 @@ template <typename T> bool inArray(T **array, int size, T *value) {
     }
     return false;
 }
+
+// bool isCombos(Recipe **array, int size, Recipe *value) {
+//     for (int i = 0; i < size; i++) {
+//         if (array[i] == value) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
+
 bool chefCanCook(CRPairs *, Chef *, Recipe *);
 
 namespace r {

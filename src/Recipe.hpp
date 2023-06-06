@@ -1,14 +1,14 @@
 #ifndef RECIPE_HPP
 #define RECIPE_HPP
 
-#include "include/json/json.h"
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <exception>
 #include "Chef.hpp"
 #include "Values.hpp"
+#include "include/json/json.h"
+#include <exception>
+#include <fstream>
+#include <iostream>
 #include <map>
+#include <string>
 
 struct dishBuff {
     int dishNum;
@@ -88,6 +88,7 @@ class Recipe {
   private:
     Flavor getFlavor(Json::Value &flavorJson);
     void getMaterials(Json::Value &materialsJson);
+    std::map<int, int> getCombos(Json::Value &combosJson, int id);
 
   public:
     static dishBuff rarityBuff[5];
@@ -99,7 +100,8 @@ class Recipe {
     Materials materialCategories;
     CookAbility cookAbility;
     Flavor flavor;
-    Recipe(Json::Value &recipe);
+    std::map<int, int> combos;
+    Recipe(Json::Value &recipe, Json::Value &combosJson);
     Recipe() {}
     void print();
     static void initRarityBuff(Json::Value &usrBuff);

@@ -39,6 +39,7 @@ States r0::randomChef(States &s, CList *chefList, RList *recipeList,
         count++;
     } while (repeatChef(pChef, s.chef, chefNum) &&
              count < RANDOM_SEARCH_TIMEOUT);
+    std::cout << "count: " << count << std::endl;
     if (count >= RANDOM_SEARCH_TIMEOUT) {
         throw NoChefException();
     }
