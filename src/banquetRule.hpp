@@ -923,10 +923,10 @@ int banquetRule9(BanquetRule *const &rule, States &s, int t) {
             break;
         }
     }
-    // 条件：四火：下道料理饱腹感-3
+    // 条件：四火：本道料理饱腹感-3
     for (int i = d + 3; i < d + 5; i++) {
         if (s.recipe[i]->rarity == 4) {
-            lenientRule[i + 1]->addRule.full += -3;
+            lenientRule[i]->addRule.full += -3;
             break;
         }
     }
