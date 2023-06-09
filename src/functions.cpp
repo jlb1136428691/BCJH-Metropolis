@@ -177,7 +177,7 @@ int e0::sumPrice(States s, CList *chefList, RList *recipeList,
 
         // 第一个贵客
         BanquetRule rule[NUM_CHEFS * DISH_PER_CHEF];
-        std::vector<int> v = {3, 6, 7};
+        std::vector<int> v = {8, 9};
         BanquetInfo bi[NUM_CHEFS * DISH_PER_CHEF];
         int ans = 0;
         tangyuan(rule, s);
