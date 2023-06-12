@@ -1,13 +1,14 @@
 #ifndef CHEF_HPP
 #define CHEF_HPP
 
-#include "include/json/json.h"
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <exception>
 #include "Recipe.hpp"
 #include "Values.hpp"
+#include "include/json/json.h"
+#include <exception>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 class Recipe;
 
 class Chef {
@@ -22,12 +23,13 @@ class Chef {
     bool male;
     bool female;
     int id;
-    int tool = NOT_EQUIPPED;
+    AbilityEnum tool = NOT_EQUIPPED;
     std::string name;
     Skill skill;
     std::vector<Recipe *> recipeCapable;
+    std::vector<Recipe *> recipeLearned;
 
-    void loadRecipeCapable(std::map<int, Recipe> &recipeList);
+    void loadRecipeCapable(std::vector<Recipe> &recipeList);
     bool isCapable(Recipe *r);
 
     static void setGlobalBuff(CookAbility buff) { globalAbilityBuff = buff; }
@@ -45,12 +47,12 @@ class Chef {
     Chef(Json::Value &v, int ultimateSkillId);
     Chef() {}
     void print();
-    Chef addTool(AbilityEnum);
+    void modifyTool(AbilityEnum);
+    Chef addTool_modify_name(AbilityEnum);
 };
+typedef std::vector<Chef> CList;
+void loadChef(CList &chefList);
 
-void loadChef(std::map<int, Chef> &chefList);
-
-void loadChefTools(const std::map<int, Chef> &chefList,
-                   std::map<int, Chef> &newChefList);
+std::string getToolName(AbilityEnum tool);
 
 #endif

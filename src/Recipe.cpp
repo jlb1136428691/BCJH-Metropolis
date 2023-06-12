@@ -1,13 +1,13 @@
+#include "Recipe.hpp"
+#include "../config.hpp"
+#include "Chef.hpp"
 #include "include/json/json.h"
-#include <string>
+#include "utils/json.hpp"
+#include <exception>
 #include <fstream>
 #include <iostream>
-#include <exception>
-#include "Chef.hpp"
-#include "Recipe.hpp"
+#include <string>
 #include <vector>
-#include "utils/json.hpp"
-#include "../config.hpp"
 Recipe::Recipe(Json::Value &recipe) {
     this->name = recipe["name"].asString();
     this->id = recipe["recipeId"].asInt();
@@ -53,7 +53,7 @@ void Recipe::print() {
     this->cookAbility.print();
     this->flavor.print();
 }
-void loadRecipe(std::map<int, Recipe> &recipeList) {
+void loadRecipe(RList &recipeList) {
     Json::Value usrData;
     std::ifstream gameDataF("../data/data.min.json", std::ifstream::binary);
     // std::cout << gameDataF.fail() << std::endl;
@@ -70,7 +70,7 @@ void loadRecipe(std::map<int, Recipe> &recipeList) {
     for (auto recipe : recipes) {
         int id = recipe["recipeId"].asInt();
         if (recipeGot[std::to_string(id)].asBool()) {
-            recipeList[id] = Recipe(recipe);
+            recipeList.push_back(Recipe(recipe));
         }
     }
 }

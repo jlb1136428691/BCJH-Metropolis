@@ -8,7 +8,7 @@
 #include <exception>
 #include "Chef.hpp"
 #include "Values.hpp"
-#include <map>
+#include <vector>
 
 struct dishBuff {
     int dishNum;
@@ -104,5 +104,6 @@ class Recipe {
     void print();
     static void initRarityBuff(Json::Value &usrBuff);
 };
-void loadRecipe(std::map<int, Recipe> &recipeList);
+typedef std::vector<Recipe> RList;
+void loadRecipe(RList &recipeList);
 #endif
