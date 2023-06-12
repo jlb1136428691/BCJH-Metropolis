@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
         s = run(chefList, recipeList, log, silent);
         // }
         // do{
-        s = run(chefList, recipeList, log, silent);
+        // s = run(chefList, recipeList, log, silent);
         // } while (s < 1210000);
     } else {
         calculator(chefList, recipeList);
