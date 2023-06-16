@@ -7,7 +7,7 @@
 #define NUM_CHEFS (NUM_GUESTS * CHEFS_PER_GUEST)
 
 #define MODE 1 // 1:宴会模式; 2:限时任务
-#define TARGET_SCORE_APPROXIMATE 10000000
+#define TARGET_SCORE_APPROXIMATE 2360000
 // 预期达到的分数
 // 如果是限时任务，这里输分数线
 // 如果是宴会模式，不用特别准，差两倍/一半以内都可以
@@ -33,9 +33,9 @@
 // ** 以下内容不要修改，会造成程序出问题 ** //
 // ************************************* //
 
-#if MODE == 2
+// #if MODE == 2
 #define SEARCH_TARGET_SCORE                                                    \
     TARGET_SCORE_APPROXIMATE // 限时任务时，达到这个分数就可以停止搜索
-#endif
+// #endif
 
 #endif
