@@ -1014,7 +1014,7 @@ int banquetRule10(BanquetRule *const &rule, States &s, int t) {
         s.recipe[d + 2]->cookAbility.bake > 0) {
         for (int i = d + 3; i < d + 9; i++) {
             if (s.recipe[i]->cookAbility.steam > 0) {
-                strictRule[i]->addRule.full += -1;
+                strictRule[i]->addRule.full += +1;
             }
         }
     }
@@ -1047,7 +1047,7 @@ int banquetRule10(BanquetRule *const &rule, States &s, int t) {
             break;
         }
     }
-    // 条件：切：本道料理售价+50%
+    // 条件：切：本道料理基础售价+50%
     for (int i = d + 3; i < d + 6; i++) {
         if (s.recipe[i]->cookAbility.knife>0) {
             lenientRule[i]->baseRule.buff += 50;
@@ -1106,13 +1106,13 @@ int banquetRule11(BanquetRule *const &rule, States &s, int t) {
         }
     }
     // 条件：神：本道料理售价-100%
-    for (int i = d + 3; i < d + 6; i++) {
+    for (int i = d + 0; i < d + 3; i++) {
         if (s.chef[i / 3]->skill.ability / s.recipe[i]->cookAbility >= 4) {
             lenientRule[i]->addRule.buff += -100;
             break;
         }
     }
-    // 条件：三道蒸：下阶段炒技法料理饱腹度-1
+    // 条件：三道蒸：下两阶段炒技法料理饱腹度-1
     if (s.recipe[d + 0]->cookAbility.steam > 0 &&
         s.recipe[d + 1]->cookAbility.steam > 0 &&
         s.recipe[d + 2]->cookAbility.steam > 0) {
@@ -1122,7 +1122,7 @@ int banquetRule11(BanquetRule *const &rule, States &s, int t) {
             }
         }
     }
-    // 条件：三道烤：下阶段切技法料理售价+100%
+    // 条件：三道烤：下两阶段切技法料理售价+100%
     if (s.recipe[d + 0]->cookAbility.bake > 0 &&
         s.recipe[d + 1]->cookAbility.bake > 0 &&
         s.recipe[d + 2]->cookAbility.bake > 0) {
@@ -1141,14 +1141,14 @@ int banquetRule11(BanquetRule *const &rule, States &s, int t) {
         }
     }
     // 条件：1火：下道料理意图生效次数+1
-    for (int i = d + 6; i < d + 9; i++) {
+    for (int i = d + 3; i < d + 5; i++) {
         if (s.recipe[i]->rarity == 1) {
             lenientRule[i+1]->oneMore();
             break;
         }
     }
     // 条件：甜：本道料理基础售价+50%
-    for (int i = d + 3; i < d + 5; i++) {
+    for (int i = d + 3; i < d + 6; i++) {
         if (s.recipe[i]->flavor.sweet) {
             lenientRule[i]->baseRule.buff += 50;
             break;
